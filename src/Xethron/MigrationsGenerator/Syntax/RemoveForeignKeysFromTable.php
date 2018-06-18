@@ -15,6 +15,8 @@ class RemoveForeignKeysFromTable extends Table {
 	protected function getItem(array $foreignKey)
 	{
 		$name = empty($foreignKey['name']) ? $this->createIndexName($foreignKey['field']) : $foreignKey['name'];
+		$table_prefix = \DB::getTablePrefix();
+		$name = preg_replace("/^${table_prefix}/i", "", $name);
 		return sprintf("\$table->dropForeign('%s');", $name);
 	}
 

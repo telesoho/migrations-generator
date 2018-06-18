@@ -33,6 +33,11 @@ class SchemaGenerator {
 	private $ignoreForeignKeyNames;
 
 	/**
+	 * @var string
+	 */
+	private $table_prefix;
+
+	/**
 	 * @param string $database
 	 * @param bool   $ignoreIndexNames
 	 * @param bool   $ignoreForeignKeyNames
@@ -60,6 +65,7 @@ class SchemaGenerator {
 
 		$this->ignoreIndexNames = $ignoreIndexNames;
 		$this->ignoreForeignKeyNames = $ignoreForeignKeyNames;
+		$this->table_prefix = \DB::getTablePrefix();
 	}
 
 	/**
@@ -67,16 +73,25 @@ class SchemaGenerator {
 	 */
 	public function getTables()
 	{
-		return $this->schema->listTableNames();
+		$listTableName = $this->schema->listTableNames();
+		if($this->table_prefix) {
+			// remove all table_prefix from table names
+			foreach ($listTableName as $key => $value) {
+				$listTableName[$key] = preg_replace("/^$this->table_prefix/i", "", $value);
+			}
+		}
+		return $listTableName;
 	}
 
 	public function getFields($table)
 	{
+		$table = $this->table_prefix . $table;
 		return $this->fieldGenerator->generate($table, $this->schema, $this->database, $this->ignoreIndexNames);
 	}
 
 	public function getForeignKeyConstraints($table)
 	{
+		$table = $this->table_prefix . $table;
 		return $this->foreignKeyGenerator->generate($table, $this->schema, $this->ignoreForeignKeyNames);
 	}
 

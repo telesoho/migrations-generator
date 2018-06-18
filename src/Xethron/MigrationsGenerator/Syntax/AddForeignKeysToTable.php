@@ -14,15 +14,19 @@ class AddForeignKeysToTable extends Table {
 	 */
 	protected function getItem(array $foreignKey)
 	{
+		$table_prefix = \DB::getTablePrefix();
+		$noprefixForeignKeyOn = preg_replace("/^${table_prefix}/i", "", $foreignKey['on']);
+		$noprefixForeignKeyName = preg_replace("/^${table_prefix}/i", "", $foreignKey['name']);
+
 		$value = $foreignKey['field'];
-		if ( ! empty($foreignKey['name'])) {
-			$value .= "', '". $foreignKey['name'];
+		if ( ! empty($noprefixForeignKeyName)) {
+			$value .= "', '". $noprefixForeignKeyName;
 		}
 		$output = sprintf(
 			"\$table->foreign('%s')->references('%s')->on('%s')",
 			$value,
 			$foreignKey['references'],
-			$foreignKey['on']
+			$noprefixForeignKeyOn
 		);
 		if ($foreignKey['onUpdate']) {
 			$output .= sprintf("->onUpdate('%s')", $foreignKey['onUpdate']);
