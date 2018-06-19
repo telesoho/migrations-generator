@@ -50,17 +50,21 @@ class FieldGenerator {
 	 */
 	protected function getEnum($table)
 	{
+		$table_prefix = DB::getTablePrefix();
+		DB::setTablePrefix('');
 		try {
 			$result = DB::table('information_schema.columns')
 				->where('table_schema', $this->database)
 				->where('table_name', $table)
 				->where('data_type', 'enum')
 				->get(['column_name','column_type']);
-			if ($result)
-				return $result;
-			else
-				return [];
 		} catch (\Exception $e){
+			return [];
+		}
+		DB::setTablePrefix($table_prefix);
+		if ($result) {
+			return $result;
+		} else {
 			return [];
 		}
 	}
