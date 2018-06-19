@@ -16,7 +16,8 @@ class AddForeignKeysToTable extends Table {
 	{
 		$table_prefix = \DB::getTablePrefix();
 		$noprefixForeignKeyOn = preg_replace("/^${table_prefix}/i", "", $foreignKey['on']);
-		$noprefixForeignKeyName = preg_replace("/^${table_prefix}/i", "", $foreignKey['name']);
+		// $noprefixForeignKeyName = preg_replace("/^${table_prefix}/i", "", $foreignKey['name']);
+		$noprefixForeignKeyName = $foreignKey['name'];
 
 		$value = $foreignKey['field'];
 		if ( ! empty($noprefixForeignKeyName)) {
