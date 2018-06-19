@@ -28,7 +28,7 @@ abstract class Table extends \Way\Generators\Syntax\Table{
 		$compiled = $this->compiler->compile($this->getTemplate(), ['table'=>$table,'method'=>$method]);
 		$items = $this->getItems($fields);
 		if($engine) {
-			array_unshift($items, "\$table->engine = $engine;");
+			array_unshift($items, "\$table->engine = '$engine';");
 		}
 		return $this->replaceFieldsWith($items, $compiled);
 	}
