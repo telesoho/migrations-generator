@@ -69,6 +69,23 @@ class SchemaGenerator {
 	}
 
 	/**
+	 * Return engine of a given table
+	 * @param string $table
+	 * @return string
+	 */
+	public function getTableEngine($table) 
+	{
+		$table_prefix = DB::getTablePrefix();
+		DB::setTablePrefix('');
+		$result = DB::table('information_schema.TABLES')
+			->where('table_schema', $this->database)
+			->where('table_name', $table_prefix . $table)
+			->first(['engine'])->engine;
+		DB::setTablePrefix($table_prefix);
+		return $result;
+	}
+
+	/**
 	 * @return mixed
 	 */
 	public function getTables()

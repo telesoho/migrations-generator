@@ -240,6 +240,7 @@ class MigrateGenerateCommand extends GeneratorCommand {
 		foreach ( $tables as $table ) {
 			$this->table = $table;
 			$this->migrationName = 'create_'. $this->table .'_table';
+			$this->engine = $this->schemaGenerator->getTableEngine($table);
 			$this->fields = $this->schemaGenerator->getFields( $this->table );
 
 			$this->generate();
@@ -314,7 +315,7 @@ class MigrateGenerateCommand extends GeneratorCommand {
 	protected function getTemplateData()
 	{
 		if ( $this->method == 'create' ) {
-			$up = (new AddToTable($this->file, $this->compiler))->run($this->fields, $this->table, $this->connection, 'create');
+			$up = (new AddToTable($this->file, $this->compiler))->run($this->fields, $this->table, $this->connection, 'create', $this->engine);
 			$down = (new DroppedTable)->drop($this->table, $this->connection);
 		}
 

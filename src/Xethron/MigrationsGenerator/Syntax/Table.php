@@ -19,14 +19,18 @@ abstract class Table extends \Way\Generators\Syntax\Table{
      *
      * @return string
      */
-	public function run(array $fields, $table, $connection = null, $method = 'table')
+	public function run(array $fields, $table, $connection = null, $method = 'table', $engine='')
 	{
 		$table_prefix = \DB::getTablePrefix();
 		$table = preg_replace("/^${table_prefix}/i", "", $table);
 		$this->table = $table;
         if (!is_null($connection)) $method = 'connection(\''.$connection.'\')->'.$method;
 		$compiled = $this->compiler->compile($this->getTemplate(), ['table'=>$table,'method'=>$method]);
-		return $this->replaceFieldsWith($this->getItems($fields), $compiled);
+		$items = $this->getItems($fields);
+		if($engine) {
+			array_unshift($items, "\$table->engine = $engine;");
+		}
+		return $this->replaceFieldsWith($items, $compiled);
 	}
 
 	/**
