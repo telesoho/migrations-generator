@@ -1,5 +1,5 @@
 {
-	"name": "xethron/migrations-generator",
+	"name": "telesoho/migrations-generator",
 	"description": "Generates Laravel Migrations from an existing database",
 	"keywords": ["laravel", "migration", "generator", "migrations", "artisan"],
 	"license": "MIT",
@@ -7,6 +7,10 @@
 		{
 			"name": "Bernhard Breytenbach",
 			"email": "bernhard@coffeecode.co.za"
+		},
+		{
+			"name": "telesoho",
+			"email": "telesoho@gmail.com"
 		}
 	],
 	"require": {
@@ -17,7 +21,7 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"Xethron\\MigrationsGenerator": "src/"
+			"Telesoho\\MigrationsGenerator": "src/"
 		}
 	},
 	"require-dev": {
@@ -30,7 +34,7 @@
 		"laravel": {
 			"providers": [
 				"Way\\Generators\\GeneratorsServiceProvider",
-				"Xethron\\MigrationsGenerator\\MigrationsGeneratorServiceProvider"
+				"Telesoho\\MigrationsGenerator\\MigrationsGeneratorServiceProvider"
 			]
 		}
 	}
